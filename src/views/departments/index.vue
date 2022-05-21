@@ -17,7 +17,7 @@
       </el-card>
 
       <!-- dialog -->
-      <add-dept :showDialog="showDialog" />
+      <add-dept :showDialog="showDialog" :treeNode="node" />
       <!-- / dialog -->
     </div>
   </div>
@@ -45,13 +45,17 @@ export default {
         { name: "人事部", manager: "孙权" },
       ],
       departs: [],
-      company: { name: "江苏传智播客教育科技股份有限公司", manager: "负责人" },
+      company: {
+        name: "江苏传智播客教育科技股份有限公司",
+        manager: "负责人",
+        id: "",
+      },
       defaultProps: {
         children: "children",
         label: "label",
       },
       showDialog: false,
-      node: null,
+      node: null, //当前选中节点对象数据
     };
   },
   methods: {
