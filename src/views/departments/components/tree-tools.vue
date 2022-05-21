@@ -48,6 +48,7 @@ export default {
     operateDepts(type) {
       console.log("sss");
       if (type === "add") {
+        this.$emit("addDepart", this.treeNode);
       } else if (type === "edit") {
       } else {
         //删除
@@ -56,7 +57,6 @@ export default {
             let ret = await DelDepartments(this.treeNode.id);
             this.$emit("delDepts"); // 触发自定义事件
             this.$message.success("删除部门成功");
-            console.log(ret);
           })
           .catch((_) => {});
       }

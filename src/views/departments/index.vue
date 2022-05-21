@@ -9,11 +9,16 @@
           <tree-tools
             slot-scope="{ data }"
             @delDepts="getDepartments"
+            @addDepart="addDepart"
             :treeNode="data"
           ></tree-tools>
         </el-tree>
         <!--    /  row-->
       </el-card>
+
+      <!-- dialog -->
+      <add-dept :showDialog="showDialog" />
+      <!-- / dialog -->
     </div>
   </div>
 </template>
@@ -22,9 +27,11 @@
 import TreeTools from "./components/tree-tools.vue";
 import { getDepartments, DelDepartments } from "@/api/department";
 import { tranListToTreeData } from "@/utils/index";
+import AddDept from "./components/add-dept.vue";
 export default {
   components: {
     TreeTools,
+    AddDept,
   },
   data() {
     return {
@@ -43,6 +50,8 @@ export default {
         children: "children",
         label: "label",
       },
+      showDialog: false,
+      node: null,
     };
   },
   methods: {
@@ -54,6 +63,11 @@ export default {
     },
     async DelCurDepartment() {
       await DelDepartments("a");
+    },
+    // 添加权限人员和diaglog显示
+    addDepart(curNode) {
+      this.showDialog = true;
+      this.node = curNode;
     },
   },
   created() {
