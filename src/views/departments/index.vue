@@ -6,7 +6,11 @@
         <!--        end-->
         <!--      row-->
         <el-tree :data="departs">
-          <tree-tools slot-scope="{ data }" :treeNode="data"></tree-tools>
+          <tree-tools
+            slot-scope="{ data }"
+            @delDepts="getDepartments"
+            :treeNode="data"
+          ></tree-tools>
         </el-tree>
         <!--    /  row-->
       </el-card>
