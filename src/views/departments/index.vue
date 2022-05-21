@@ -10,6 +10,7 @@
             slot-scope="{ data }"
             @delDepts="getDepartments"
             @addDepart="addDepart"
+            @editDepts="editDepts"
             :treeNode="data"
           ></tree-tools>
         </el-tree>
@@ -17,7 +18,12 @@
       </el-card>
 
       <!-- dialog -->
-      <add-dept :showDialog="showDialog" :treeNode="node" />
+      <add-dept
+        :showDialog.sync="showDialog"
+        @addDepts="getDepartments"
+        :treeNode="node"
+        ref="addDept"
+      />
       <!-- / dialog -->
     </div>
   </div>
@@ -59,23 +65,29 @@ export default {
     };
   },
   methods: {
-    async loadDepartments() {
+    async getDepartments() {
       let result = await getDepartments();
       console.log(result);
       this.company = { name: result.companyName };
       this.departs = tranListToTreeData(result.depts, "");
     },
     async DelCurDepartment() {
-      await DelDepartments("a");
+      await DelDepartments();
     },
     // 添加权限人员和diaglog显示
     addDepart(curNode) {
       this.showDialog = true;
       this.node = curNode;
     },
+    editDepts(node) {
+      // 首先打开弹层
+      this.showDialog = true;
+      this.node = node; // 赋值操作的节点
+      this.$refs["addDept"].getDepartDetail(node.id);
+    },
   },
   created() {
-    this.loadDepartments();
+    this.getDepartments();
   },
 };
 </script>

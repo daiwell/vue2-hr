@@ -46,10 +46,10 @@ export default {
   },
   methods: {
     operateDepts(type) {
-      console.log("sss");
       if (type === "add") {
         this.$emit("addDepart", this.treeNode);
       } else if (type === "edit") {
+        this.$emit("editDepts", this.treeNode);
       } else {
         //删除
         this.$confirm("确让要删除吗")
