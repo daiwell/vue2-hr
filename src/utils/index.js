@@ -117,6 +117,8 @@ export function param2Obj (url) {
 }
 
 //格式化成tree格式数组
+
+// item是一个对象
 export function tranListToTreeData (list, rootValue) {
   let arr = []
   list.forEach(item => {

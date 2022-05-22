@@ -70,6 +70,7 @@ export default {
       console.log(result);
       this.company = { name: result.companyName };
       this.departs = tranListToTreeData(result.depts, "");
+      console.log(this.departs);
     },
     async DelCurDepartment() {
       await DelDepartments();

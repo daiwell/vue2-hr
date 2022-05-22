@@ -83,31 +83,31 @@ export default {
   data() {
     let checkNameRepeat = async (rule, value, callback) => {
       const { depts } = await getDepartments();
-      const isRepeat = null;
+      let isRepeat = null;
       if (this.formData.id) {
         //编辑模式，校验编辑模式的规则
-        depts
+        isRepeat = depts
           .filter(
             (item) =>
-              //先找到除了自己的所有部门，在筛选出和自己同pid的子部门
-              item.id !== this.formData.id && item.pid === this.treeNode.pid
+              //先找到除了自己的所有部门，在排除自己
+              item.pid === this.treeNode.pid && item.id !== this.formData.id
           )
           .some((item) => item.name === value);
       } else {
         isRepeat = depts
           .filter((item) => item.pid === this.treeNode.id)
           .some((item) => item.name === value);
-        isRepeat
-          ? callback(new Error(`同部门下已经有重复的部门${value}`))
-          : callback();
       }
+      isRepeat
+        ? callback(new Error(`同部门下已经有重复的部门${value}`))
+        : callback();
     };
 
     // 检查编码重复
     let checkCodeRepeat = async (rule, value, callback) => {
       // 先要获取最新的组织架构数据
       const { depts } = await getDepartments();
-      const isRepeat = null;
+      let isRepeat = null;
       if (this.formData.id) {
         //编辑模式，校验编辑模式的规则
         isRepeat = depts.filter(
@@ -115,10 +115,10 @@ export default {
         );
       } else {
         isRepeat = depts.some((item) => item.code === value && value); // 这里加一个 value不为空 因为我们的部门有可能没有code
-        isRepeat
-          ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
-          : callback();
       }
+      isRepeat
+        ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
+        : callback();
     };
 
     return {
