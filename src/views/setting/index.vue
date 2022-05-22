@@ -12,11 +12,11 @@
               >
             </el-row>
             <!-- 表格 -->
-            <el-table border="">
-              <el-table-column label="序号" width="120" />
-              <el-table-column label="角色名称" width="240" />
-              <el-table-column label="描述" />
-              <el-table-column label="操作">
+            <el-table border="" :data="list">
+              <el-table-column type="index" label="序号" width="120" />
+              <el-table-column prop="name" label="角色名称" width="240" />
+              <el-table-column prop="description" label="描述" />
+              <el-table-column prop="name" label="操作">
                 <el-button size="small" type="success">分配权限</el-button>
                 <el-button size="small" type="primary">编辑</el-button>
                 <el-button size="small" type="danger">删除</el-button>
@@ -30,7 +30,13 @@
               style="height: 60px"
             >
               <!-- 分页组件 -->
-              <el-pagination layout="prev,pager,next" />
+              <el-pagination
+                :current-page="page.page"
+                :page-size="page.pagesize"
+                :total="page.total"
+                layout="prev, pager, next"
+                @current-change="changePage"
+              />
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="公司信息">
@@ -67,7 +73,35 @@
 </template>
 
 <script>
-export default {};
+import { getRoleList } from "@/api/setting";
+export default {
+  data() {
+    return {
+      list: [], // 承接数组
+      page: {
+        // 放置页码及相关数据
+        page: 1,
+        pagesize: 5, //控制每页数量
+        total: 0, // 记录总数
+      },
+    };
+  },
+  methods: {
+    async getRoleList() {
+      const { total, rows } = await getRoleList(this.page);
+      this.page.total = total;
+      this.list = rows;
+    },
+    changePage(newPage) {
+      // newPage是当前点击的页码
+      this.page.page = newPage; // 将当前页码赋值给当前的最新页码
+      this.getRoleList();
+    },
+  },
+  created() {
+    this.getRoleList();
+  },
+};
 </script>
 
 <style></style>
